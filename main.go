@@ -40,15 +40,14 @@ func main() {
 	}
 
 	var (
-		scraperNames = []string{"Bing", "Yahoo", "Qwant", "DailyMotion", "DuckDuckGo", "Brave"}
-		form         = tview.NewForm()
-		output       = tview.NewTextView().SetDynamicColors(true).SetWrap(true)
+		scraperNames    = []string{"Bing", "Yahoo", "Qwant", "DailyMotion", "DuckDuckGo", "Brave"}
+		form            = tview.NewForm()
+		output          = tview.NewTextView().SetDynamicColors(true).SetWrap(true)
+		selectedScraper string
+		query           string
 	)
 
 	output.SetBorder(true).SetTitle("Results")
-
-	var selectedScraper string
-	var query string
 
 	form.AddDropDown("Scraper", scraperNames, 0, func(option string, index int) {
 		selectedScraper = option
