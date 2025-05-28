@@ -10,7 +10,6 @@ const (
 	Yahoo
 	Qwant
 	YouTube
-	BitChute
 	DailyMotion
 	GitHub
 	GitLab
