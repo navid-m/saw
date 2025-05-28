@@ -10,4 +10,5 @@ const (
 	Yahoo
 	Qwant
 	DailyMotion
+	Brave
 )

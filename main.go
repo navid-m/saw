@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
-	"swarm/scrapers/qwantscraper"
+	"swarm/scrapers/bravescraper"
 )
 
 func main() {
 	query := "asdf"
 	// results, err := bingscraper.ScrapeBing(query)
-	results, err := qwantscraper.ScrapeQwant(query)
+	results, err := bravescraper.ScrapeBrave(query)
 	if err != nil {
 		log.Fatalf("Error scraping Bing: %v", err)
 	}
