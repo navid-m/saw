@@ -11,10 +11,12 @@ import (
 )
 
 func ScrapeBing(query string) ([]models.SearchResult, error) {
-	var results []models.SearchResult
-	searchURL := "https://www.bing.com/search?q=" + url.QueryEscape(query)
+	var (
+		results   []models.SearchResult
+		searchURL = "https://www.bing.com/search?q=" + url.QueryEscape(query)
+		resp, err = http.Get(searchURL)
+	)
 
-	resp, err := http.Get(searchURL)
 	if err != nil {
 		return nil, err
 	}
@@ -30,13 +32,13 @@ func ScrapeBing(query string) ([]models.SearchResult, error) {
 	}
 
 	doc.Find("li.b_algo").Each(func(i int, s *goquery.Selection) {
-		titleTag := s.Find("h2 a")
-		descTag := s.Find(".b_caption p")
-
-		title := strings.TrimSpace(titleTag.Text())
-		link, _ := titleTag.Attr("href")
-		description := strings.TrimSpace(descTag.Text())
-
+		var (
+			titleTag    = s.Find("h2 a")
+			descTag     = s.Find(".b_caption p")
+			title       = strings.TrimSpace(titleTag.Text())
+			link, _     = titleTag.Attr("href")
+			description = strings.TrimSpace(descTag.Text())
+		)
 		if title != "" && link != "" {
 			results = append(results, models.SearchResult{
 				Title:       title,
