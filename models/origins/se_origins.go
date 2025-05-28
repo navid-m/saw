@@ -9,9 +9,5 @@ const (
 	DuckDuckGo
 	Yahoo
 	Qwant
-	YouTube
 	DailyMotion
-	GitHub
-	GitLab
-	Codeberg
 )
