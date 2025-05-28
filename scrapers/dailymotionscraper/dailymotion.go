@@ -1,65 +1,57 @@
 package dailymotionscraper
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"swarm/models"
 	"swarm/models/origins"
-
-	"github.com/PuerkitoBio/goquery"
-	"github.com/corpix/uarand"
 )
 
 func ScrapeDailymotion(query string) ([]models.SearchResult, error) {
-	var results []models.SearchResult
+	var (
+		results []models.SearchResult
+		baseURL = "https://api.dailymotion.com/videos"
+		params  = url.Values{}
+	)
 
-	searchURL := "https://www.dailymotion.com/search/" + strings.ReplaceAll(query, " ", "%20") + "/top-results"
+	params.Set("search", query)
+	params.Set("limit", "10")
+	params.Set("fields", "id,title,duration")
 
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", searchURL, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("User-Agent", uarand.GetRandom())
-
-	resp, err := client.Do(req)
+	var (
+		apiURL    = baseURL + "?" + params.Encode()
+		resp, err = http.Get(apiURL)
+	)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("status code error: %d %s", resp.StatusCode, resp.Status)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API returned status code %d", resp.StatusCode)
 	}
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
+	var apiResp dmApiResponse
+	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
 		return nil, err
 	}
 
-	doc.Find(`div[data-testid="video-card"]`).Each(func(i int, s *goquery.Selection) {
+	for _, v := range apiResp.List {
 		var (
-			titleTag    = s.Find("a.VideoCard__videoTitleLink___1IRDu")
-			link, _     = titleTag.Attr("href")
-			title       = strings.TrimSpace(titleTag.Text())
-			description = ""
+			link = fmt.Sprintf("https://www.dailymotion.com/video/%s", v.ID)
+			desc = fmt.Sprintf("Duration: %d seconds", v.Duration)
 		)
-
-		if !strings.HasPrefix(link, "http") {
-			link = "https://www.dailymotion.com" + link
-		}
-
-		if title != "" && link != "" {
-			results = append(results, models.SearchResult{
-				Origin:      origins.DailyMotion,
-				Title:       title,
-				Link:        link,
-				Description: description,
-			})
-		}
-	})
+		results = append(results, models.SearchResult{
+			Origin:      origins.DailyMotion,
+			Title:       strings.TrimSpace(v.Title),
+			Link:        link,
+			Description: desc,
+		})
+	}
 
 	return results, nil
 }
