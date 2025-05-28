@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"swarm/bingscraper"
+	"swarm/scrapers/bingscraper"
 )
 
 func main() {
