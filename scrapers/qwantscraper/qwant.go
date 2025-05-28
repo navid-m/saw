@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"swarm/models"
+
+	"github.com/navid-m/saw/models"
 
 	"github.com/corpix/uarand"
 )

@@ -1,4 +1,4 @@
-module swarm
+module github.com/navid-m/saw
 
 go 1.24.3
 

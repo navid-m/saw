@@ -1,6 +1,6 @@
 package models
 
-import "swarm/models/origins"
+import "github.com/navid-m/saw/models/origins"
 
 // Represents a single search result
 type SearchResult struct {

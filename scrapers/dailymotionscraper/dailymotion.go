@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"strings"
 
-	"swarm/models"
-	"swarm/models/origins"
+	"github.com/navid-m/saw/models"
+	"github.com/navid-m/saw/models/origins"
 )
 
 func ScrapeDailymotion(query string) ([]models.SearchResult, error) {

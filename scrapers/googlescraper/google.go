@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"swarm/models"
-	"swarm/models/origins"
+
+	"github.com/navid-m/saw/models"
+	"github.com/navid-m/saw/models/origins"
 )
 
 func ScrapeGoogle(query, apiKey, searchEngineID string) ([]models.SearchResult, error) {

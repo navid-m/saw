@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"swarm/scrapers/bingscraper"
+
+	"github.com/navid-m/saw/scrapers/bingscraper"
 )
 
 func main() {
