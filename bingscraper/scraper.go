@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 	"swarm/models"
+	"swarm/models/origins"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -54,6 +55,7 @@ func extractFromBing(resp *http.Response, results []models.SearchResult) (
 		)
 		if title != "" && link != "" {
 			results = append(results, models.SearchResult{
+				Origin:      origins.Bing,
 				Title:       title,
 				Link:        link,
 				Description: description,
