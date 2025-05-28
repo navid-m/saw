@@ -13,8 +13,7 @@ import (
 func ScrapeBing(query string) ([]models.SearchResult, error) {
 	var (
 		results   []models.SearchResult
-		searchURL = "https://www.bing.com/search?q=" + url.QueryEscape(query)
-		resp, err = http.Get(searchURL)
+		resp, err = http.Get("https://www.bing.com/search?q=" + url.QueryEscape(query))
 	)
 
 	if err != nil {
