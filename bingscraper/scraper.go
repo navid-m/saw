@@ -25,9 +25,23 @@ func ScrapeBing(query string) ([]models.SearchResult, error) {
 		return nil, fmt.Errorf("status code error: %d %s", resp.StatusCode, resp.Status)
 	}
 
+	results, failed, result, err := extractFromBing(resp, results)
+	if failed {
+		return result, err
+	}
+
+	return results, nil
+}
+
+func extractFromBing(resp *http.Response, results []models.SearchResult) (
+	[]models.SearchResult,
+	bool,
+	[]models.SearchResult,
+	error,
+) {
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, true, nil, err
 	}
 
 	doc.Find("li.b_algo").Each(func(i int, s *goquery.Selection) {
@@ -46,6 +60,5 @@ func ScrapeBing(query string) ([]models.SearchResult, error) {
 			})
 		}
 	})
-
-	return results, nil
+	return results, false, nil, nil
 }
