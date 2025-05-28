@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"log"
-	"swarm/scrapers/bingscraper"
+	"swarm/scrapers/qwantscraper"
 )
 
 func main() {
 	query := "hello"
-	results, err := bingscraper.ScrapeBing(query)
+	// results, err := bingscraper.ScrapeBing(query)
+	results, err := qwantscraper.ScrapeQwant(query)
 	if err != nil {
 		log.Fatalf("Error scraping Bing: %v", err)
 	}
-
+	fmt.Println(len(results))
 	for i, r := range results {
 		fmt.Printf("Result #%d\n", i+1)
 		fmt.Printf("Title: %s\n", r.Title)
